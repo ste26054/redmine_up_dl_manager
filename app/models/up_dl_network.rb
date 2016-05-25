@@ -6,14 +6,19 @@ class UpDlNetwork < ActiveRecord::Base
   validate :check_ip_list_valid
 
   def check_ip_list_valid
-    if (ip_list.map{|str| ip_valid?(str)} & [false]).size > 0
+    if (ip_list.map{|str| UpDlNetwork.ip_valid?(str)} & [false]).size > 0
       errors.add(:ip_list, "Contains an invalid ip")
     end
   end
 
-  private
-
-  def ip_valid?(str)
+  def self.ip_valid?(str)
     return !(IPAddr.new(str) rescue nil).nil?
   end
+
+  def self.is_ip_in_iplist?(ip_str, ip_list_str)
+    list = ip_list_str.map{ |ip_s| IPAddr.new(ip_s) }
+    compare_list = list.map { |ip_o| ip_o === ip_str }
+    return (compare_list & [true]).size > 0
+  end
+
 end

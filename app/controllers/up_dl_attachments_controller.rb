@@ -4,4 +4,6 @@ class UpDlAttachmentsController < ApplicationController
 
   def index
   end
+
+  def 
 end
