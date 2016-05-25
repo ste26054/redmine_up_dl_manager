@@ -6,13 +6,13 @@ module RedmineUpDlManager
           # before_action :test
           
 
-          def upload_with_manager
-            Rails.logger.info "***** Calling upload_without_manager"
-            render_403
-            #upload_without_manager
-          end
+          # def upload_with_manager
+          #   # Rails.logger.info "***** Calling upload_without_manager"
+          #   # render_403
+          #   upload_without_manager
+          # end
 
-          alias_method_chain :upload, :manager
+          # alias_method_chain :upload, :manager
           # private
 
           # def test
