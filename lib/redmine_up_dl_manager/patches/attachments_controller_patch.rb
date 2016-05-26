@@ -4,6 +4,17 @@ module RedmineUpDlManager
       def self.included(base)
         base.class_eval do
           before_action :get_overall_user_policy
+
+          def download_with_manager
+            if get_overall_user_policy.download_policy == "download_denied_except_inline_images" && !@attachment.image?
+              flash[:error] = l(:download_forbidden_message)
+              redirect_to :back
+            else
+              download_without_manager
+            end
+          end
+
+          alias_method_chain :download, :manager
           
           private
 

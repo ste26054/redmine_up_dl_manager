@@ -1,10 +1,11 @@
 class UpDlNetwork < ActiveRecord::Base
   serialize :ip_list, Array
 
-  attr_accessible :ip_list, :description
+  attr_accessible :ip_list_str, :description
 
   validate :check_ip_list_valid
-  validates :description, :uniqueness => true
+  validates :description, :uniqueness => true, presence: true
+  validates :ip_list, presence: true
 
   def ip_list_str
     @ip_list_str = self.ip_list.join("\n")
@@ -15,7 +16,7 @@ class UpDlNetwork < ActiveRecord::Base
   end
 
   def check_ip_list_valid
-    unless ip_list.map{|str| UpDlNetwork.ip_valid?(str)}.any?
+    unless ip_list.map{|str| UpDlNetwork.ip_valid?(str)}.all?
       errors.add(:ip_list, "Contains an invalid ip")
     end
   end

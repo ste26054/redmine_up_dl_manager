@@ -1,6 +1,6 @@
 <% get_overall_user_policy  %>
 
-<% if @overall_user_policy.upload_policy == "up_allowed" %>
+<% if @overall_user_policy.upload_policy == "upload_allowed" %>
   <span id="attachments_fields">
     <% if defined?(container) && container && container.saved_attachments %>
       <% container.saved_attachments.each_with_index do |attachment, i| %>

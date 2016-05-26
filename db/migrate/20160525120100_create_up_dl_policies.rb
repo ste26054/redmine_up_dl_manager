@@ -3,7 +3,7 @@ class CreateUpDlPolicies < ActiveRecord::Migration
     create_table :up_dl_policies do |t|
       t.column :upload_policy, :integer, default: 0, :null => false
       t.column :download_policy, :integer, default: 0, :null => false
-      t.column :scope, :integer, default: 0, :null => false
+      t.column :scope_policy, :integer, default: 0, :null => false
       t.column :description, :string, :null => false
       t.column :created_at, :datetime
       t.column :updated_at, :datetime

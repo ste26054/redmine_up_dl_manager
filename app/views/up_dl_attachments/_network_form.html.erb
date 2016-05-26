@@ -1,6 +1,15 @@
-<%= error_messages_for 'network' %>
+<% if up_dl_network.errors.any? %>
+  <div class="flash error">
+    <ul>
+        <% up_dl_network.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+    </ul>
+  </div>
+<% end %>
 
 <div class="box tabular">
   <p><%= f.text_field :description, :required => true, :size => 60 %></p>
-  <p><%= f.text_area :ip_list, :required => true, :value => @up_dl_network.ip_list_str, size: "30x10" %></p>
+  <p><%= f.text_area :ip_list_str, :required => true, size: "30x10" %></p>
+  <p><small>Example of ip adresses accepted: 'xxx.xxx.xxx.xxx/xx', 'xxx.xxx.xxx.xxx'</small></p>
 </div>

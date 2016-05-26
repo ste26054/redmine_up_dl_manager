@@ -1,0 +1,6 @@
+<%= title ["Attachments Manager", up_dl_attachments_path], "New policy" %>
+
+<%= labelled_form_for @up_dl_policy, :url => up_dl_policies_create_path do |f| %>
+  <%= render :partial => 'policy_form', :locals => { :f => f, :up_dl_policy => @up_dl_policy } %>
+  <%= submit_tag l(:button_create) %>
+<% end %>

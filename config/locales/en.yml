@@ -1,3 +1,10 @@
 en:
   label_up_dl_attachment: "Attachments Manager"
-  field_ip_list: "List of network IPs (aaa.bbb.ccc.ddd/ef), one per line"
+  field_ip_list_str: "List of ip adresses describing the network (one ip per line)"
+  field_upload_policy: "Upload policy"
+  field_download_policy: "Download policy"
+  field_scope_policy: "Scope policy"
+  field_up_dl_networks_attributes: "Allowed networks"
+  field_users_attributes: "Policy applies to"
+  download_forbidden_message: "Download of these documents is disabled by company policy on this network. Please contact your line manager or the administrators for more information."
+  upload_forbidden_message: "Upload of files is disabled by company policy on this network. Please contact your line manager or the administrators for more information."
