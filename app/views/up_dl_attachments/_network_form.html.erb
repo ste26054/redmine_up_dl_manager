@@ -1,0 +1,6 @@
+<%= error_messages_for 'network' %>
+
+<div class="box tabular">
+  <p><%= f.text_field :description, :required => true, :size => 60 %></p>
+  <p><%= f.text_area :ip_list, :required => true, :value => @up_dl_network.ip_list_str, size: "30x10" %></p>
+</div>

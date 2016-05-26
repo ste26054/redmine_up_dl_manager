@@ -1,0 +1,6 @@
+<%= title ["Attachments Manager", up_dl_attachments_path], "Edit Network" %>
+
+<%= labelled_form_for @up_dl_network, :url => up_dl_networks_edit_path do |f| %>
+  <%= render :partial => 'network_form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_save) %>
+<% end %>

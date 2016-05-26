@@ -1,1 +1,41 @@
-<p>TEST</p>
+<%= title "Attachments Manager" %>
+<%=# title ['Absence dashboard', leave_requests_path], "Upload Download Manager" 
+%>
+
+
+<h3>Policies</h3>
+
+
+<br/>
+
+<h3>Networks</h3>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>IP List</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for network in @up_dl_networks do %>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td><%= network.description %></td>
+          <td><%= network.ip_list.join(", ") %></td>
+          <td>
+            <%= link_to l(:button_edit), up_dl_networks_edit_path(network), :class => "icon icon-edit" 
+            %>
+            <%= link_to l(:button_delete), up_dl_networks_destroy_path(network), :method => :delete, :class => "icon icon-del" 
+            %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= link_to "New network", up_dl_networks_new_path, :class => "icon icon-add" %>
+
+

@@ -4,6 +4,15 @@ class UpDlNetwork < ActiveRecord::Base
   attr_accessible :ip_list, :description
 
   validate :check_ip_list_valid
+  validates :description, :uniqueness => true
+
+  def ip_list_str
+    @ip_list_str = self.ip_list.join("\n")
+  end
+
+  def ip_list_str=(str)
+    self.ip_list = str.delete(' ').gsub(/\n+|\r+/, "\n").squeeze("\n").strip.split("\n")
+  end
 
   def check_ip_list_valid
     unless ip_list.map{|str| UpDlNetwork.ip_valid?(str)}.any?

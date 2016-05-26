@@ -1,0 +1,6 @@
+<%= title ["Attachments Manager", up_dl_attachments_path], "New Network" %>
+
+<%= labelled_form_for @up_dl_network, :url => up_dl_networks_new_path do |f| %>
+  <%= render :partial => 'network_form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_create) %>
+<% end %>
