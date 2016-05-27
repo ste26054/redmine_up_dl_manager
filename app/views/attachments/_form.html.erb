@@ -30,7 +30,7 @@
   (<%= l(:label_max_size) %>: <%= number_to_human_size(Setting.attachment_max_size.to_i.kilobytes) %>)
   </span>
 <% else %>
-  <p><strong>Upload is disabled by policy</strong></p>
+  <p><strong><%= l(:upload_forbidden_message) %></strong></p>
 <% end %>
 
 <% content_for :header_tags do %>
