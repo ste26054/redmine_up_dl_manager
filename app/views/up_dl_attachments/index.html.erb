@@ -1,0 +1,76 @@
+<%= title "Attachments Manager" %>
+
+<h3>Policies</h3>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Upload</th>
+        <th>Download</th>
+        <th>Scope</th>
+        <th>Policy applied if IP is</th>
+        <th>Networks</th>
+        <th>Users</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for policy in @up_dl_policies do %>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td><%= policy.description %></td>
+          <td><%= policy.upload_policy.humanize %></td>
+          <td><%= policy.download_policy.humanize %></td>
+          <td><%= policy.scope_policy.humanize %></td>
+          <td><%= policy.applicability_policy.humanize %></td>
+          <td><%= policy.up_dl_networks.map(&:description).join(", ") %></td>
+          <td><%= policy.users.map(&:name).sort.join(", ") %></td>
+          <td>
+            <%= link_to l(:button_edit), up_dl_policies_edit_path(policy), :class => "icon icon-edit" 
+            %>
+            <%= link_to l(:button_delete), up_dl_policies_destroy_path(policy), :method => :delete, :class => "icon icon-del" 
+            %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= link_to "New policy", up_dl_policies_new_path, :class => "icon icon-add" %>
+
+<br/>
+<p></p>
+
+<h3>Networks</h3>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>IP List</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for network in @up_dl_networks do %>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td><%= network.description %></td>
+          <td><%= network.ip_list.join(", ") %></td>
+          <td>
+            <%= link_to l(:button_edit), up_dl_networks_edit_path(network), :class => "icon icon-edit" 
+            %>
+            <%= link_to l(:button_delete), up_dl_networks_destroy_path(network), :method => :delete, :class => "icon icon-del" 
+            %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= link_to "New network", up_dl_networks_new_path, :class => "icon icon-add" %>
+
+

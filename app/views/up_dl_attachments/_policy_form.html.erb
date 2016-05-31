@@ -1,0 +1,19 @@
+<% if up_dl_policy.errors.any? %>
+  <div class="flash error">
+    <ul>
+        <% up_dl_policy.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="box tabular">
+  <p><%= f.text_field :description, :required => true %></p>
+  <p><%= f.select :upload_policy, upload_policies_options_for_select %></p>
+  <p><%= f.select :download_policy, download_policies_options_for_select %></p>
+  <p><%= f.select :scope_policy, scope_policies_options_for_select %></p>
+  <p><%= f.select :users_attributes, options_for_select(active_users_options_for_select, up_dl_policy.users.map(&:id)), {}, { :multiple => true, :size => 10 } %></p>
+  <p><%= f.select :applicability_policy, applicability_policies_options_for_select %></p>
+  <p><%= f.select :up_dl_networks_attributes, options_for_select(UpDlNetwork.all.map{|n| [n.description, n.id.to_s]}, up_dl_policy.up_dl_networks.map(&:id)), {}, { :multiple => true, :size => 5 } %></p>
+</div>
