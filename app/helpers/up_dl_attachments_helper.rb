@@ -9,6 +9,10 @@ module UpDlAttachmentsHelper
 
   def scope_policies_options_for_select
     UpDlPolicy.scope_policies.keys.to_a.map{|a| [a.humanize, a]}
+  end  
+
+  def applicability_policies_options_for_select
+    UpDlPolicy.applicability_policies.keys.to_a.map{|a| [a.humanize, a]}
   end
 
   def active_users_options_for_select

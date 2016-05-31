@@ -8,8 +8,13 @@ module RedmineUpDlManager
           def download_with_manager
             if get_overall_user_policy.download_policy == "download_denied_except_inline_images" && !@attachment.image?
               flash[:error] = l(:download_forbidden_message)
-              redirect_to :back
-              # render :nothing => true
+              if request.referer
+                redirect_to :back
+              elsif @attachment.container
+                redirect_to @attachment.container
+              else
+                redirect_to home_url
+              end
             else
               download_without_manager
             end
@@ -18,7 +23,13 @@ module RedmineUpDlManager
           def upload_with_manager
             if get_overall_user_policy.upload_policy == "upload_denied"
               flash[:error] = l(:upload_forbidden_message)
-              redirect_to :back
+              if request.referer
+                redirect_to :back
+              elsif @attachment.container
+                redirect_to @attachment.container
+              else
+                redirect_to home_url
+              end
             else
               upload_without_manager
             end

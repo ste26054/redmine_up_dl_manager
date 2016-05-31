@@ -6,7 +6,7 @@ module RedmineUpDlManager
           
           def link_to_attachments_with_manager(container, options = {})
             if get_overall_user_policy.download_policy == "download_denied_except_inline_images"
-              return "<p><strong>Download is disabled by policy</strong></p>".html_safe
+              return "<hr><p><strong>#{l(:download_forbidden_message)}</strong></p>".html_safe
             else
               link_to_attachments_without_manager(container, options = {})
             end

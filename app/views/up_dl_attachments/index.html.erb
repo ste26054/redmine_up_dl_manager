@@ -10,7 +10,8 @@
         <th>Upload</th>
         <th>Download</th>
         <th>Scope</th>
-        <th>Allowed networks</th>
+        <th>Policy applied if IP is</th>
+        <th>Networks</th>
         <th>Users</th>
         <th></th>
       </tr>
@@ -22,6 +23,7 @@
           <td><%= policy.upload_policy.humanize %></td>
           <td><%= policy.download_policy.humanize %></td>
           <td><%= policy.scope_policy.humanize %></td>
+          <td><%= policy.applicability_policy.humanize %></td>
           <td><%= policy.up_dl_networks.map(&:description).join(", ") %></td>
           <td><%= policy.users.map(&:name).sort.join(", ") %></td>
           <td>

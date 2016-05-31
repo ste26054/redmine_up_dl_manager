@@ -7,9 +7,10 @@ class UpDlPolicy < ActiveRecord::Base
   enum upload_policy: { upload_allowed: 0, upload_denied: 1 }
   enum download_policy: { download_allowed: 0, download_denied_except_inline_images: 1 }
   enum scope_policy: { global: 0 }
+  enum applicability_policy: { not_in_network_list: 0, in_network_list: 1 }
 
 
-  attr_accessible :upload_policy, :download_policy, :scope_policy, :description, :up_dl_networks_attributes, :users_attributes
+  attr_accessible :upload_policy, :download_policy, :scope_policy, :description, :up_dl_networks_attributes, :users_attributes, :applicability_policy
 
 
   def up_dl_networks_attributes
@@ -53,7 +54,13 @@ class UpDlPolicy < ActiveRecord::Base
   # returns overall policy for given user, ip
   def self.overall_policy_for_user_with_ip(user, ip_str)
     # get policies associated to user for which ip_str does not match ip_list of the policy.
-    ip_str_in_iplist_by_policy = user.up_dl_policies.includes(:up_dl_networks).inject({}) { |h, (k, v)| h[k] = UpDlNetwork.is_ip_in_iplist?(ip_str, k.ip_list); h }.select{|k,v| v == false}.keys
+    ip_str_in_iplist_by_policy = user.up_dl_policies.includes(:up_dl_networks).inject({}) { |h, (k, v)| h[k] = UpDlNetwork.is_ip_in_iplist?(ip_str, k.ip_list); h }.select{|k,v| #v == false
+        if k.applicability_policy == "not_in_network_list"
+          v == false
+        else
+          v == true
+        end
+      }.keys
 
     # take the max among upload and download policies: Higher enum values = more restrictive
     overall_upload_policy = ip_str_in_iplist_by_policy.max_by{|a| UpDlPolicy.upload_policies[a.upload_policy]}.try(:upload_policy)
