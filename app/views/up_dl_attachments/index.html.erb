@@ -25,7 +25,11 @@
           <td><%= policy.scope_policy.humanize %></td>
           <td><%= policy.applicability_policy.humanize %></td>
           <td><%= policy.up_dl_networks.map(&:description).join(", ") %></td>
-          <td><%= policy.users.map(&:name).sort.join(", ") %></td>
+          <% if policy.is_for_all_users %>
+            <td><strong>Everyone</strong></td>
+          <% else %>
+            <td><%= policy.users.map(&:name).sort.join(", ") %></td>
+          <% end %>
           <td>
             <%= link_to l(:button_edit), up_dl_policies_edit_path(policy), :class => "icon icon-edit" 
             %>

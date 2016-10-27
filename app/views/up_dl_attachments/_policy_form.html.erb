@@ -13,7 +13,27 @@
   <p><%= f.select :upload_policy, upload_policies_options_for_select %></p>
   <p><%= f.select :download_policy, download_policies_options_for_select %></p>
   <p><%= f.select :scope_policy, scope_policies_options_for_select %></p>
-  <p><%= f.select :users_attributes, options_for_select(active_users_options_for_select, up_dl_policy.users.map(&:id)), {}, { :multiple => true, :size => 10 } %></p>
+  <p><%= f.select :is_for_all_users,[['No', false], ['Yes', true]] %></p>
+
+  <% if up_dl_policy.is_for_all_users %>
+    <p><%= f.select :users_attributes, options_for_select(active_users_options_for_select, up_dl_policy.users.map(&:id)), {}, { :disabled => true, :multiple => true, :size => 10 } %></p>
+  <% else %>
+    <p><%= f.select :users_attributes, options_for_select(active_users_options_for_select, up_dl_policy.users.map(&:id)), {}, { :multiple => true, :size => 10 } %></p>
+  <% end %>
+  
   <p><%= f.select :applicability_policy, applicability_policies_options_for_select %></p>
   <p><%= f.select :up_dl_networks_attributes, options_for_select(UpDlNetwork.all.map{|n| [n.description, n.id.to_s]}, up_dl_policy.up_dl_networks.map(&:id)), {}, { :multiple => true, :size => 5 } %></p>
 </div>
+
+<%= javascript_tag do %>
+  $('#up_dl_policy_is_for_all_users').change(function(){
+      if($('#up_dl_policy_is_for_all_users').val() === 'true')
+      {
+        $('#up_dl_policy_users_attributes').prop('disabled', true);
+      }
+      else
+      {
+        $('#up_dl_policy_users_attributes').prop('disabled', false);
+      }
+  });
+<% end %>

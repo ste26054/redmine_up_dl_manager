@@ -9,3 +9,4 @@ en:
   field_users_attributes: "Policy applies to"
   download_forbidden_message: "Download of documents is disabled by company policy on this network. Please contact your line manager or the administrators for more information."
   upload_forbidden_message: "Upload of files is disabled by company policy on this network. Please contact the administrators for more information."
+  field_is_for_all_users: "Policy applies to all users"

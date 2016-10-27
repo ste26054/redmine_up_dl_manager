@@ -8,7 +8,7 @@ class UpDlNetwork < ActiveRecord::Base
   validates :ip_list, presence: true
 
   def ip_list_str
-    @ip_list_str = self.ip_list.join("\n")
+    @ip_list_str ||= self.ip_list.join("\n")
   end
 
   def ip_list_str=(str)

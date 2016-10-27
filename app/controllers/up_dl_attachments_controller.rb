@@ -83,7 +83,7 @@ class UpDlAttachmentsController < ApplicationController
   end
 
   def up_dl_policies_params
-    params.require(:up_dl_policy).permit(:description, :upload_policy, :download_policy, :scope_policy, :applicability_policy, up_dl_networks_attributes: [], users_attributes: [])
+    params.require(:up_dl_policy).permit(:description, :upload_policy, :download_policy, :scope_policy, :applicability_policy, :is_for_all_users, up_dl_networks_attributes: [], users_attributes: [])
   end
 
 end

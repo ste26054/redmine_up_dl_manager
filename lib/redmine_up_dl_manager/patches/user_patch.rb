@@ -9,13 +9,18 @@ module RedmineUpDlManager
           unloadable
           has_many :up_dl_policy_users, dependent: :destroy
           has_many :up_dl_policies, through: :up_dl_policy_users
+
+
         end
 
       end
     end
 
     module UserInstanceMethods
-      
+      def overall_up_dl_policies
+        up_dl_policies_statement = self.up_dl_policies.select(:id).to_sql
+        for_all_users_statement = UpDlPolicy.where("id IN (#{up_dl_policies_statement}) OR is_for_all_users = 1")
+      end
     end
   end
 end

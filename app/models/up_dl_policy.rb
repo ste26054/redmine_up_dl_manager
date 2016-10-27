@@ -9,8 +9,9 @@ class UpDlPolicy < ActiveRecord::Base
   enum scope_policy: { global: 0 }
   enum applicability_policy: { not_in_network_list: 0, in_network_list: 1 }
 
+  validates :is_for_all_users, inclusion: [true, false]
 
-  attr_accessible :upload_policy, :download_policy, :scope_policy, :description, :up_dl_networks_attributes, :users_attributes, :applicability_policy
+  attr_accessible :upload_policy, :download_policy, :scope_policy, :description, :up_dl_networks_attributes, :users_attributes, :applicability_policy, :is_for_all_users
 
 
   def up_dl_networks_attributes
@@ -41,12 +42,16 @@ class UpDlPolicy < ActiveRecord::Base
   end
 
   def users_attributes=(user_ids)
-    user_ids_sanitized = User.active.where(id: user_ids).pluck(:id)
-    UpDlPolicyUser.transaction do
+    if self.is_for_all_users
       self.up_dl_policy_users.delete_all
-      user_ids_sanitized.each do |user_id|
-        u = UpDlPolicyUser.new(up_dl_policy: self, user_id: user_id)
-        u.save
+    else
+      user_ids_sanitized = User.active.where(id: user_ids).pluck(:id)
+      UpDlPolicyUser.transaction do
+        self.up_dl_policy_users.delete_all
+        user_ids_sanitized.each do |user_id|
+          u = UpDlPolicyUser.new(up_dl_policy: self, user_id: user_id)
+          u.save
+        end
       end
     end
   end
@@ -54,7 +59,7 @@ class UpDlPolicy < ActiveRecord::Base
   # returns overall policy for given user, ip
   def self.overall_policy_for_user_with_ip(user, ip_str)
     # get policies associated to user for which ip_str does not match ip_list of the policy.
-    ip_str_in_iplist_by_policy = user.up_dl_policies.includes(:up_dl_networks).inject({}) { |h, (k, v)| h[k] = UpDlNetwork.is_ip_in_iplist?(ip_str, k.ip_list); h }.select{|k,v| #v == false
+    ip_str_in_iplist_by_policy = user.overall_up_dl_policies.includes(:up_dl_networks).inject({}) { |h, (k, v)| h[k] = UpDlNetwork.is_ip_in_iplist?(ip_str, k.ip_list); h }.select{|k,v| #v == false
         if k.applicability_policy == "not_in_network_list"
           v == false
         else
@@ -62,6 +67,12 @@ class UpDlPolicy < ActiveRecord::Base
         end
       }.keys
 
+    ip_str_in_iplist_by_policy_not_general = ip_str_in_iplist_by_policy.select{|p| !p.is_for_all_users}
+
+    if ip_str_in_iplist_by_policy_not_general.any?
+      ip_str_in_iplist_by_policy = ip_str_in_iplist_by_policy & ip_str_in_iplist_by_policy_not_general
+    end
+    
     # take the max among upload and download policies: Higher enum values = more restrictive
     overall_upload_policy = ip_str_in_iplist_by_policy.max_by{|a| UpDlPolicy.upload_policies[a.upload_policy]}.try(:upload_policy)
     overall_download_policy = ip_str_in_iplist_by_policy.max_by{|a| UpDlPolicy.download_policies[a.download_policy]}.try(:download_policy)
