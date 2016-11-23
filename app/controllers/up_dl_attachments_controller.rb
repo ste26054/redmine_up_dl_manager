@@ -1,6 +1,6 @@
 class UpDlAttachmentsController < ApplicationController
   layout 'admin'
-  action :require_admin
+  before_action :require_admin
 
   before_action :retrieve_up_dl_network, only: [:network_edit, :network_update, :network_destroy]
   before_action :retrieve_up_dl_policy, only: [:edit, :update, :destroy]
